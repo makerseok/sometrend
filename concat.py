@@ -1,4 +1,5 @@
 import pandas as pd
+import pickle
 import os
 
 
@@ -14,9 +15,14 @@ def get_excel_files(target_dir, data):
 
 def df_to_list(name, num, lists):
     for i in range(name.shape[1]):
-        temp = [[na] * int(nu) for na, nu in zip(name.iloc[:, i], num.iloc[:, i]) if pd.notnull(nu)]
-        name_list = sum(temp, [])
-        lists.append([name_list])
+        temp = [
+            (na + " ") * int(nu)
+            for na, nu in zip(name.iloc[:, i], num.iloc[:, i])
+            if pd.notnull(nu)
+        ]
+        print(temp)
+        name_string = " ".join(temp).strip()
+        lists.append(name_string)
     return lists
 
 
@@ -27,7 +33,11 @@ if __name__ == "__main__":
     lists = []
     for name, num in data:
         lists = df_to_list(name, num, lists)
-    df = pd.DataFrame(lists)
-    print(df)
-    for d in df.values:
-        print(len(d[0]))
+    print(lists)
+    for l in lists:
+        print(len(l))
+    filename = target_dir.split("/")[-1]
+    filepath = os.path.join("./listdata", filename)
+    with open(filepath, "wb") as f:
+        pickle.dump(lists, f)
+    print(filepath, "saved")
