@@ -22,6 +22,10 @@ def get_excel_files(root_dir, data, target_dir="**", get_all=False):
 def df_to_list(name, num, lists):
     for i in range(name.shape[1]):
         temp = [[na] * int(nu) for na, nu in zip(name.iloc[:, i], num.iloc[:, i]) if pd.notnull(nu)]
+        # temp = []
+        # for na, nu in zip(name.iloc[:, i], num.iloc[:, i]):
+        #     if pd.notnull(nu):
+        #         temp.append([na] * int(nu))
         name_list = sum(temp, [])
         lists.append(name_list)
     return lists
